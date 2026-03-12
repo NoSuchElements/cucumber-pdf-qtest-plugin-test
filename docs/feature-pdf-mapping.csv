@@ -1,0 +1,10 @@
+Feature Name,Feature URI,QTEST Tag,Generated PDF File Name
+DataTable And DocString,file:src/test/resources/features/datatable-docstring.feature,QTEST_TC_1201,datatable-docstring@QTEST_TC_1201.pdf
+Exception,file:src/test/resources/features/exceptions.feature,QTEST_TC_1202,exceptions@QTEST_TC_1202.pdf
+Hook and step failures,file:src/test/resources/features/failure.feature,QTEST_TC_1203,failure@QTEST_TC_1203.pdf
+Long long feature & Scenario Names,file:src/test/resources/features/lengthynames.feature,QTEST_TC_1204,lengthynames@QTEST_TC_1204.pdf
+No tag feature,file:src/test/resources/features/notags.feature,N/A,notags.pdf
+Scenario And Scenario Outline,file:src/test/resources/features/scenario-outline.feature,QTEST_TC_1205,scenario-outline@QTEST_TC_1205.pdf
+Screenshots,file:src/test/resources/features/screenshots.feature,QTEST_TC_1206,screenshots@QTEST_TC_1206.pdf
+Scenarios With No Step Definitions,file:src/test/resources/features/skipdef.feature,QTEST_TC_1207,skipdef@QTEST_TC_1207.pdf
+Two Screenshots,file:src/test/resources/features/twoimages.feature,QTEST_TC_1208,twoimages@QTEST_TC_1208.pdf
