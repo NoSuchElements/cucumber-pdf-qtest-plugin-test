@@ -10,6 +10,24 @@ The plugin extends the standard Cucumber PDF reporting by:
 - Supporting features without tags (default naming)
 - Maintaining all standard PDF report features
 
+## Recent Updates
+
+### Font Corruption Fix (March 13, 2026)
+
+**Fixed critical issue** where generating multiple per-feature PDFs would fail on the second feature with:
+```
+java.io.IOException: The TrueType font null does not contain a 'cmap' table
+```
+
+✅ **Status**: Fixed in version 1.0.0 (merged to main)
+
+**Solution implemented**:
+- File-based constructor for explicit per-feature naming
+- Error isolation (try-catch per feature)
+- Enhanced logging with success/failure counts
+
+📝 See [TESTING_FIX.md](TESTING_FIX.md) for detailed testing instructions.
+
 ## Prerequisites
 
 - Java 11 or higher
@@ -72,7 +90,25 @@ This command will:
 
 ### Expected Output
 
-After successful execution, you'll find 9 PDF files in `target/pdf-reports/`:
+After successful execution, you'll see:
+
+```
+[INFO] --- cucumber-pdf-qtest:1.0.0:pdfreportperfeature (generate-pdf-reports) ---
+[INFO] STARTED CUCUMBER PDF PER-FEATURE REPORT GENERATION PLUGIN
+[INFO] Generated PDF report: datatable-docstring@QTEST_TC_1201.pdf
+[INFO] Generated PDF report: exceptions@QTEST_TC_1202.pdf
+[INFO] Generated PDF report: failure@QTEST_TC_1203.pdf
+[INFO] Generated PDF report: lengthynames@QTEST_TC_1204.pdf
+[INFO] Generated PDF report: notags.pdf
+[INFO] Generated PDF report: scenario&outline@QTEST_TC_1205.pdf
+[INFO] Generated PDF report: screenshots@QTEST_TC_1206.pdf
+[INFO] Generated PDF report: skipdef@QTEST_TC_1207.pdf
+[INFO] Generated PDF report: twoimages@QTEST_TC_1208.pdf
+[INFO] FINISHED - Generated 9 PDF reports successfully, 0 failed
+[INFO] BUILD SUCCESS
+```
+
+Generated PDFs in `target/pdf-reports/`:
 
 ```
 target/pdf-reports/
@@ -81,7 +117,7 @@ target/pdf-reports/
 ├── failure@QTEST_TC_1203.pdf
 ├── lengthynames@QTEST_TC_1204.pdf
 ├── notags.pdf
-├── scenario-outline@QTEST_TC_1205.pdf
+├── scenario&outline@QTEST_TC_1205.pdf
 ├── screenshots@QTEST_TC_1206.pdf
 ├── skipdef@QTEST_TC_1207.pdf
 └── twoimages@QTEST_TC_1208.pdf
@@ -172,11 +208,18 @@ ls -la target/pdf-reports/
 
 # Count generated PDFs (should be 9)
 ls target/pdf-reports/*.pdf | wc -l
+
+# Verify all expected files exist
+for feature in datatable-docstring@QTEST_TC_1201 exceptions@QTEST_TC_1202 failure@QTEST_TC_1203 \
+               lengthynames@QTEST_TC_1204 notags scenario\&outline@QTEST_TC_1205 \
+               screenshots@QTEST_TC_1206 skipdef@QTEST_TC_1207 twoimages@QTEST_TC_1208; do
+    if [ -f "target/pdf-reports/${feature}.pdf" ]; then
+        echo "✅ ${feature}.pdf"
+    else
+        echo "❌ ${feature}.pdf - MISSING"
+    fi
+done
 ```
-
-### View Feature-PDF Mapping
-
-See `docs/feature-pdf-mapping.csv` for the complete mapping of features to generated PDFs.
 
 ## Integration with CI/CD
 
@@ -216,11 +259,29 @@ test:
 
 ## Troubleshooting
 
+### Font Corruption Error (FIXED)
+
+**Symptom:**
+```
+java.io.IOException: The TrueType font null does not contain a 'cmap' table
+```
+
+**Solution:** This issue was fixed in version 1.0.0. Ensure you have the latest version:
+
+```bash
+cd cucumber-pdf-qtest-plugin
+git pull origin main
+mvn clean install
+```
+
+See [TESTING_FIX.md](TESTING_FIX.md) for detailed fix information.
+
 ### No PDFs Generated
 
 1. Check JSON report was created: `ls target/cucumber-json.json`
 2. Verify plugin executed: Look for "STARTED CUCUMBER PDF PER-FEATURE REPORT GENERATION" in logs
 3. Check output directory exists: `ls -la target/pdf-reports/`
+4. Review the failure count in the summary log
 
 ### Missing QTEST Tags in Filename
 
@@ -238,6 +299,17 @@ cd cucumber-pdf-qtest-plugin
 mvn clean install
 ```
 
+### Partial Report Generation
+
+With the fix, the plugin now continues processing even if one feature fails. Check the logs for:
+
+```
+[INFO] FINISHED - Generated X PDF reports successfully, Y failed
+[ERROR] Failed to generate PDF for feature 'Feature Name' (file: feature.pdf): Error message
+```
+
+This allows you to identify which specific features encountered issues while still getting reports for successful features.
+
 ## Contributing
 
 Contributions are welcome! Please submit issues and pull requests to:
@@ -251,5 +323,6 @@ This project uses the same license as the cucumber-pdf-qtest-plugin.
 ## References
 
 - [cucumber-pdf-qtest-plugin](https://github.com/NoSuchElements/cucumber-pdf-qtest-plugin)
-- [cucumber-pdf-plugin](https://github.com/grasshopper7/cucumber-pdf-plugin)
+- [cucumber-pdf-plugin](https://github.com/grasshopper7/cucumber-pdf-plugin) (upstream library)
 - [Cucumber Documentation](https://cucumber.io/docs/cucumber/)
+- [Font Corruption Fix Details](TESTING_FIX.md)
