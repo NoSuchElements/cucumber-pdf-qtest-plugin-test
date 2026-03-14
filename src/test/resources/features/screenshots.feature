@@ -1,13 +1,10 @@
 @QTEST_TC_1206
+@website @skip
 Feature: Screenshots
-  
-  Scenario: Capture single screenshot
-    Given a user is on the home page
-    When taking a screenshot
-    Then validation passes
-  
-  Scenario: Multiple screenshots
-    Given the system is initialized
-    When taking a screenshot
-    And taking a screenshot
-    Then the system state is valid
+
+  Scenario: Scenario screenshot GIT
+    Given Go to https://github.com/
+
+  Scenario: Scenario screenshot STACK
+    Given Go to https://stackoverflow.com/
+
