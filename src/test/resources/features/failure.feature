@@ -1,12 +1,11 @@
 @QTEST_TC_1203
+@failure
 Feature: Hook and step failures
-  
-  Scenario: Intentional step failure
-    Given the system is initialized
-    When a step fails
-    Then validation passes
-  
-  Scenario: Passing scenario after failure
-    Given a user is on the home page
-    When the user performs an action
-    Then validation passes
+
+  Scenario: Before Hook
+    Given Hook failure step
+    When Skip hook failure step
+
+  Scenario: After Hook
+    Given Hook failure step
+    Then Skip hook failure step
