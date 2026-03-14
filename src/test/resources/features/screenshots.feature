@@ -1,18 +1,11 @@
-@QTEST_TC_1207
-@skip
-Feature: Scenarios With No Step Definitions
+@QTEST_TC_1206
+@website @skip
+Feature: Screenshots
 
-  @skipscenario
-  Scenario: No Step defined
-    Given No step definition methods
+  Scenario: Scenario screenshot GIT
+    Given Go to https://github.com/
 
-  Scenario: Pending step
-    Pending Scenario Description
+  Scenario: Scenario screenshot STACK
+    Given Go to https://stackoverflow.com/
 
-    Given Pending step definition
-
-  Scenario: Skipped step
-    Skipped Scenario Description
-
-    Given Skipped step definition
 
