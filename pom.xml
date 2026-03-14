@@ -1,105 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    
-    <groupId>com.nosuchelements.test</groupId>
-    <artifactId>cucumber-pdf-qtest-plugin-test</artifactId>
-    <version>1.0.0</version>
-    <packaging>jar</packaging>
-    
-    <name>Cucumber PDF QTest Plugin - Test Implementation</name>
-    <description>Implementation test project demonstrating split-pdf-reporter-plugin usage with per-feature PDF generation</description>
-    
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <cucumber.version>7.7.0</cucumber.version>
-        <testng.version>7.5</testng.version>
-        <split.pdf.reporter.version>1.1.0</split.pdf.reporter.version>
-    </properties>
-    
-    <dependencies>
-        <!-- Cucumber Dependencies -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-testng</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <!-- TestNG -->
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-    
-    <build>
-        <plugins>
-            <!-- Compiler Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-            </plugin>
-            
-            <!-- Failsafe Plugin for Integration Tests -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M5</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!-- Split PDF Reporter Plugin (replaces cucumber-pdf-qtest-plugin) -->
-            <plugin>
-                <groupId>com.qtest</groupId>
-                <artifactId>split-pdf-reporter-plugin</artifactId>
-                <version>${split.pdf.reporter.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-per-feature-pdfs</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>generate-pdfs</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!-- Single JSON mode (default produced by Cucumber runner) -->
-                    <cucumberJson>${project.build.directory}/cucumber.json</cucumberJson>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-                    <!-- Where PDFs will be written -->
-                    <reportOutputDir>${project.build.directory}/pdf-reports</reportOutputDir>
+	<groupId>com.nosuchelements.test</groupId>
+	<artifactId>cucumber-pdf-qtest-plugin-test</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
 
-                    <!-- Optional: use glob instead of single file, if needed in future -->
-                    <!-- <cucumberJsonPattern>target/**/cucumber*.json</cucumberJsonPattern> -->
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<name>Cucumber PDF QTest Plugin - Test Implementation</name>
+	<description>Implementation test project demonstrating
+		split-pdf-reporter-plugin usage with per-feature PDF generation</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+
+		<cucumber.version>7.7.0</cucumber.version>
+		<testng.version>7.5</testng.version>
+		<split.pdf.reporter.version>1.1.0</split.pdf.reporter.version>
+		<selenium.version>4.18.1</selenium.version>
+	</properties>
+
+	<dependencies>
+		<!-- Cucumber -->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-testng</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- WebDriverManager -->
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>5.9.2</version>
+		</dependency>
+
+		<!-- Selenium -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<!-- Compiler Plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+
+			<!-- Failsafe Plugin for Integration Tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.0.0-M5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Split PDF Reporter Plugin (replaces cucumber-pdf-qtest-plugin) -->
+			<plugin>
+				<groupId>com.qtest</groupId>
+				<artifactId>split-pdf-reporter-plugin</artifactId>
+				<version>${split.pdf.reporter.version}</version>
+				<executions>
+					<execution>
+						<id>generate-per-feature-pdfs</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>generate-pdfs</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- Single JSON mode (default produced by Cucumber runner) -->
+					<cucumberJson>${project.build.directory}/cucumber-json.json</cucumberJson>
+
+					<!-- Where PDFs will be written -->
+					<reportOutputDir>${project.build.directory}/pdf-reports</reportOutputDir>
+
+					<!-- Optional: use glob instead of single file, if needed in
+					future -->
+					<!--
+					<cucumberJsonPattern>target/**/cucumber*.json</cucumberJsonPattern> -->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
