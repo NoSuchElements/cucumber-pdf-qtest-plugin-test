@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     
     <name>Cucumber PDF QTest Plugin - Test Implementation</name>
-    <description>Implementation test project demonstrating cucumber-pdf-qtest-plugin usage with per-feature PDF generation</description>
+    <description>Implementation test project demonstrating split-pdf-reporter-plugin usage with per-feature PDF generation</description>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,6 +20,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <cucumber.version>7.7.0</cucumber.version>
         <testng.version>7.5</testng.version>
+        <split.pdf.reporter.version>1.0.0</split.pdf.reporter.version>
     </properties>
     
     <dependencies>
@@ -74,26 +75,29 @@
                 </executions>
             </plugin>
             
-            <!-- Cucumber PDF QTest Plugin -->
+            <!-- Split PDF Reporter Plugin (replaces cucumber-pdf-qtest-plugin) -->
             <plugin>
-                <groupId>com.nosuchelements</groupId>
-                <artifactId>cucumber-pdf-qtest-plugin</artifactId>
-                <version>1.0.0</version>
+                <groupId>com.qtest</groupId>
+                <artifactId>split-pdf-reporter-plugin</artifactId>
+                <version>${split.pdf.reporter.version}</version>
                 <executions>
                     <execution>
-                        <id>generate-pdf-reports</id>
+                        <id>generate-per-feature-pdfs</id>
                         <phase>post-integration-test</phase>
                         <goals>
-                            <goal>pdfreportperfeature</goal>
+                            <goal>generate-pdfs</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <cucumberJsonReportDirectory>${project.build.directory}</cucumberJsonReportDirectory>
-                    <cucumberPdfReportDirectory>${project.build.directory}/pdf-reports</cucumberPdfReportDirectory>
-                    <qtestTagPrefix>@QTEST_TC_</qtestTagPrefix>
-                    <title>QTest Integration Report</title>
-                    <displayExpanded>true</displayExpanded>
+                    <!-- Single JSON mode (default produced by Cucumber runner) -->
+                    <cucumberJson>${project.build.directory}/cucumber.json</cucumberJson>
+
+                    <!-- Where PDFs will be written -->
+                    <reportOutputDir>${project.build.directory}/pdf-reports</reportOutputDir>
+
+                    <!-- Optional: use glob instead of single file, if needed in future -->
+                    <!-- <cucumberJsonPattern>target/**/cucumber*.json</cucumberJsonPattern> -->
                 </configuration>
             </plugin>
         </plugins>
