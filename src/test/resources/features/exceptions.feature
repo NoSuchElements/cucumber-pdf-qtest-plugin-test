@@ -1,12 +1,21 @@
 @QTEST_TC_1202
+@exception
 Feature: Exception
-  
-  Scenario: Handle expected exception
-    Given the system is initialized
-    When an exception occurs
-    Then the result should be "EXCEPTION_HANDLED"
-  
-  Scenario: Exception recovery
-    Given a user is on the home page
-    When an exception occurs
-    Then the system state is valid
+
+  Scenario: Exception
+    Given Raise exception
+
+  Scenario: No Exception
+    Given Do not raise exception
+
+  Scenario: Other Exception
+    Given Raise exception
+    Given Raise exception
+
+  Scenario Outline: Check exception <row_num>
+    Given Raise exception
+
+    Examples: 
+      | row_num |
+      |       1 |
+      |       2 |
