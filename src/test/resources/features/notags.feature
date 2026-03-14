@@ -1,11 +1,7 @@
 Feature: No tag feature
   
-  Scenario: Scenario without tags
-    Given the system is initialized
-    When the user performs an action
-    Then validation passes
-  
-  Scenario: Another untagged scenario
-    Given a user is on the home page
-    When the user clicks "Submit"
-    Then the page displays "Success"
+  Scenario: No tag scenario
+
+    Given Write a 'given' step with precondition in 'Scenario No tag'
+    When Complete action in 'when' step in 'Scenario No tag'
+    Then Validate the outcome in 'then' step in 'Scenario No tag'
