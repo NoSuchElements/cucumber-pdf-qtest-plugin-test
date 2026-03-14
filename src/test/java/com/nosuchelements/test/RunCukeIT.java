@@ -12,6 +12,7 @@ import io.cucumber.testng.CucumberOptions;
     glue = "com.nosuchelements.test",
     plugin = {
         "json:target/cucumber-json.json",
+        "html:target/cucumber-reports.html",
         "pretty",
         "summary"
     },
